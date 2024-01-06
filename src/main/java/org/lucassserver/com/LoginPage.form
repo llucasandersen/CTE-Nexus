@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.lucassserver.com.LoginPage">
-  <grid id="27dc6" binding="panel1" layout-manager="GridLayoutManager" row-count="4" column-count="21" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-    <margin top="0" left="0" bottom="0" right="0"/>
+  <!-- Set the dark gray background color -->
+  <property key="background" value="darkgray"/>
+  <grid id="27dc6" binding="panel1" layout-manager="GridLayoutManager" row-count="4" column-count="21" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="10">
+    <margin top="20" left="20" bottom="20" right="20"/>
     <constraints>
-      <xy x="20" y="20" width="733" height="467"/>
+      <xy x="0" y="0" width="773" height="497"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
+      <!-- Add an image component on the left -->
+      <component id="image" class="javax.swing.JLabel" binding="image">
+        <constraints>
+          <grid row="0" column="0" row-span="4" col-span="1" vsize-policy="1" hsize-policy="1" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <!-- Set the icon to "cleburne.jpg" -->
+          <icon path="path/to/cleburne.jpg"/>
+          <!-- Set the initial visibility to true -->
+          <visible value="true"/>
+        </properties>
+      </component>
       <component id="1980d" class="javax.swing.JLabel" binding="userlabel">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Username"/>
@@ -18,7 +32,7 @@
       </component>
       <component id="51f7b" class="javax.swing.JLabel" binding="passwordlabel">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Password"/>
@@ -27,7 +41,7 @@
       <grid id="869ff" binding="title" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="21" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="19" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -44,7 +58,7 @@
       </grid>
       <component id="c28e" class="javax.swing.JTextField" binding="user">
         <constraints>
-          <grid row="1" column="2" row-span="1" col-span="19" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="1" column="3" row-span="1" col-span="17" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -52,15 +66,25 @@
       </component>
       <component id="3caf5" class="javax.swing.JPasswordField" binding="password">
         <constraints>
-          <grid row="2" column="2" row-span="1" col-span="16" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="2" column="3" row-span="1" col-span="16" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
         <properties/>
       </component>
+      <!-- Add a button to toggle visibility -->
+      <component id="toggleButton" class="javax.swing.JButton" binding="toggleButton">
+        <constraints>
+          <grid row="2" column="19" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <!-- Set the initial icon to "show.png" -->
+          <icon path="path/to/show.png"/>
+        </properties>
+      </component>
       <component id="7703e" class="javax.swing.JButton" binding="loginbutton">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="19" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="3" row-span="1" col-span="16" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Login"/>
