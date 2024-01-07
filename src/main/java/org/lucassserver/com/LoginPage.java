@@ -17,7 +17,8 @@ public class LoginPage {
     private JPanel title;
     private JLabel titleofpanel;
     private JPanel panel1;
-
+    private JButton hide;
+    private JButton show;
 
     private static final String DATABASE_URL = "jdbc:mysql://96.39.211.90:12345/serverdata";
     private static final String DATABASE_USER = "root";
@@ -25,9 +26,20 @@ public class LoginPage {
 
     public LoginPage() {
         loginbutton.addActionListener(e -> authenticateUser());
+
+        hide.addActionListener(e -> {
+            password.setEchoChar((char) 0); // Set the password field to display characters
+            hide.setVisible(false); // Hide the "hide" button
+            show.setVisible(true);  // Make the "show" button visible
+        });
+
+        // Add action listener to the "show" button
+        show.addActionListener(e -> {
+            password.setEchoChar('\u2022'); // Set the password field to hide characters
+            hide.setVisible(true);  // Make the "hide" button visible
+            show.setVisible(false); // Hide the "show" button
+        });
     }
-
-
 
     private void authenticateUser() {
         String username = user.getText();
@@ -98,41 +110,34 @@ public class LoginPage {
         }
     }
 
-
     private void displayErrorMessage(String errorMessage) {
         titleofpanel.setText(errorMessage);
-
 
         Timer timer = new Timer(2000, e -> titleofpanel.setText("CTE Partners and Business"));
         timer.setRepeats(false);
         timer.start();
     }
 
-
     public void createAndShowGUI() {
         JFrame frame = new JFrame("Login and Home Pages");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
 
         loginPanel = new JPanel();
         loginPanel.setLayout(new BorderLayout());
         loginPanel.add(title, BorderLayout.NORTH);
         loginPanel.add(panel1, BorderLayout.CENTER);
+        loginPanel.setBackground(Color.DARK_GRAY);
         cardPanel.add(loginPanel, "loginPanel");
-
-
+        cardPanel.setBackground(Color.DARK_GRAY);
 
         JPanel HelpPanel = new Helppage().getPanel();
         cardPanel.add(HelpPanel, "HelpPanel");
 
-
         JPanel homePanel = new Homepage().getPanel();
         cardPanel.add(homePanel, "homePanel");
-
 
         JPanel adminPanel = new AdminPage().getMainPanel();
         cardPanel.add(adminPanel, "adminPanel");
@@ -150,7 +155,4 @@ public class LoginPage {
             new LoginPage().createAndShowGUI();
         });
     }
-
-
-
 }
