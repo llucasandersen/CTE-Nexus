@@ -13,6 +13,8 @@ public class Helppage extends JPanel {
     private JPanel cardPanel;
     private JButton continueButton;
 
+
+
     public Helppage() {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
@@ -28,6 +30,16 @@ public class Helppage extends JPanel {
         add(cardPanel, BorderLayout.CENTER);
         add(createNavigationPanel(), BorderLayout.SOUTH);
     }
+
+
+        private static JPanel homepage = null;
+
+        public JPanel getHomepagePanel() {
+            if (homepage == null) {
+                homepage = new Homepage().getPanel();
+            }
+            return homepage;
+        }
 
     private JPanel createNavigationPanel() {
         JPanel navigationPanel = new JPanel();
@@ -81,6 +93,7 @@ public class Helppage extends JPanel {
         JButton continueButton = new JButton("Continue");
         styleButton(continueButton); // Apply the styling method
         continueButton.setVisible(false);
+        getHomepagePanel();
         continueButton.addActionListener(e -> {
             // Navigate to the Homepage panel
             continueButton.setText("Please Wait...");
@@ -90,7 +103,7 @@ public class Helppage extends JPanel {
                 throw new RuntimeException(ex);
             }
             JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            frame.setContentPane(new Homepage().getPanel());
+            frame.setContentPane(homepage);
             frame.revalidate();
         });
 
