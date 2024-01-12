@@ -53,7 +53,6 @@ public class AdminPage {
         buttonPanel.add(addUserButton);
         buttonPanel.add(removeUserButton);
         buttonPanel.add(removeDataButton);
-        getHomepagePanel();
 
 
         mainPanel.add(searchPanel, BorderLayout.NORTH);
@@ -438,20 +437,14 @@ public class AdminPage {
         mainPanel.revalidate();
         mainPanel.repaint();
     }
-
-
-    private static JPanel homepage = null;
-
-    public JPanel getHomepagePanel() {
-        if (homepage == null) {
-            homepage = new Homepage().getPanel();
-        }
-        return homepage;
-    }
-
     private void logout() {
+        CardLayout cardLayout = new CardLayout();
+        JPanel cardPanel = new JPanel(cardLayout);
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        frame.setContentPane(homepage);
+        JPanel homePanel = new Homepage().getPanel();
+        cardPanel.add(homePanel, "homePanel");
+
+        frame.setContentPane(cardPanel);
         frame.revalidate();
         frame.repaint();
     }

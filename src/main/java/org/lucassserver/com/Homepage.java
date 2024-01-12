@@ -14,9 +14,9 @@ import javax.swing.border.Border;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.InputStreamReader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONArray;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 
 import static java.lang.Thread.sleep;
 
@@ -251,9 +251,10 @@ public class Homepage extends JPanel {
             connection.disconnect();
 
             // Extract the AI response text
-            String aiResponse = extractAIText(response.toString());
+//            String aiResponse = extractAIText(response.toString());
 
-            return aiResponse;
+//            return aiResponse;
+                return null;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -261,24 +262,24 @@ public class Homepage extends JPanel {
         }
     }
 
-    private String extractAIText(String jsonResponse) {
-        try {
-            JSONObject json = new JSONObject(jsonResponse);
-            JSONArray candidates = json.getJSONArray("candidates");
-            if (candidates.length() > 0) {
-                JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
-                JSONArray parts = content.getJSONArray("parts");
-                if (parts.length() > 0) {
-                    JSONObject textPart = parts.getJSONObject(0);
-                    String text = textPart.getString("text");
-                    return text;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "AI Response: Blocked please pick another search term";
-    }
+//    private String extractAIText(String jsonResponse) {
+//        try {
+//            JSONObject json = new JSONObject(jsonResponse);
+//            JSONArray candidates = json.getJSONArray("candidates");
+//            if (candidates.length() > 0) {
+//                JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
+//                JSONArray parts = content.getJSONArray("parts");
+//                if (parts.length() > 0) {
+//                    JSONObject textPart = parts.getJSONObject(0);
+//                    String text = textPart.getString("text");
+//                    return text;
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return "AI Response: Blocked please pick another search term";
+//    }
 
     private void customizeTabbedPane() {
         tabbedPane = new JTabbedPane();
