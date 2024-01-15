@@ -13,9 +13,8 @@ public class Helppage extends JPanel {
     private JPanel cardPanel;
     private JButton continueButton;
 
-
-
     public Helppage() {
+        
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         cardPanel.setBackground(Color.DARK_GRAY); // Dark theme background
@@ -32,14 +31,14 @@ public class Helppage extends JPanel {
     }
 
 
-        private static JPanel homepage = null;
+    private static JPanel homepage = null;
 
-        public JPanel getHomepagePanel() {
-            if (homepage == null) {
-                homepage = new Homepage().getPanel();
-            }
-            return homepage;
+    public JPanel getHomepagePanel() {
+        if (homepage == null) {
+            homepage = new Homepage().getPanel();
         }
+        return homepage;
+    }
 
     private JPanel createNavigationPanel() {
         JPanel navigationPanel = new JPanel();
@@ -147,7 +146,7 @@ public class Helppage extends JPanel {
         // Example AI Response (Initially invisible)
         JEditorPane aiResponseExample = new JEditorPane();
         aiResponseExample.setContentType("text/html"); // Set content type to HTML
-        aiResponseExample.setText("<html><body style='color: white;'>" +
+        aiResponseExample.setText("<html><body style='color: black;'>" +
                 "<h2>AI Response:</h2>" +
                 "<p>Hello, from the provided information, the best company for duct work on the school is <strong>Andersen Air</strong>.</p>" +
                 "<p><strong>Andersen Air</strong> is a company that does HVAC work for Cleburne and does repairs on ducts and furnaces.</p>" +
@@ -283,6 +282,19 @@ public class Helppage extends JPanel {
         return this;
     }
 
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Helppage().showUI());
+    }
+    
+    public void showUI(){
+        JFrame frame = new JFrame("Help Page");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setContentPane(new Helppage());
+        frame.getContentPane().setBackground(Color.BLACK);
+        frame.setVisible(true);
+   }
 
 
     // Additional methods (createHowToUseSearchPanel, createHowToUseAISearchPanel, createOtherInfoPanel, createNavigationPanel) remain unchanged

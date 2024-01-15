@@ -438,7 +438,12 @@ public class AdminPage {
         mainPanel.revalidate();
         mainPanel.repaint();
     }
-
+    private void logout() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
+        frame.setContentPane(homepage);
+        frame.revalidate();
+        frame.repaint();
+    }
 
     private static JPanel homepage = null;
 
@@ -447,13 +452,6 @@ public class AdminPage {
             homepage = new Homepage().getPanel();
         }
         return homepage;
-    }
-
-    private void logout() {
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(mainPanel);
-        frame.setContentPane(homepage);
-        frame.revalidate();
-        frame.repaint();
     }
 
 
@@ -515,7 +513,7 @@ public class AdminPage {
         SwingUtilities.invokeLater(() -> new AdminPage().showUI());
     }
 
-    private void showUI() {
+    public void showUI() {
         JFrame frame = new JFrame("Admin Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(mainPanel);

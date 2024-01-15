@@ -1,5 +1,9 @@
 package org.lucassserver.com;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
@@ -14,9 +18,9 @@ import javax.swing.border.Border;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.InputStreamReader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONArray;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 
 import static java.lang.Thread.sleep;
 
@@ -92,6 +96,7 @@ public class Homepage extends JPanel {
         topPanel.add(searchField);
         topPanel.add(searchButton);
 
+
         aiSearchButton = new JButton("AI Search");
         aiSearchButton.setForeground(Color.WHITE);
         aiSearchButton.setBackground(Color.DARK_GRAY); // Different color to distinguish
@@ -101,6 +106,7 @@ public class Homepage extends JPanel {
         helpbutton.setForeground(Color.WHITE);
         helpbutton.setBackground(Color.DARK_GRAY);
         topPanel.add(helpbutton);
+
 
         customizeTabbedPane();
 
@@ -121,8 +127,8 @@ public class Homepage extends JPanel {
         searchLabel.setForeground(Color.WHITE); // Set text color to white for visibility
 
 
-        aiSearchField = new JTextField(20);
-        aiSearchField.setMaximumSize(new Dimension(aiSearchField.getPreferredSize().width, 30)); // to prevent stretching
+        aiSearchField = new JTextField(30);
+        aiSearchField.setMaximumSize(new Dimension(aiSearchField.getPreferredSize().width, 40)); // to prevent stretching
         aiSearchField.setForeground(Color.WHITE); // Set text color to white
         aiSearchField.setBackground(Color.DARK_GRAY); // Set a darker background for the field
         aiSearchField.setCaretColor(Color.WHITE); // Set caret color
@@ -264,8 +270,8 @@ public class Homepage extends JPanel {
     private String extractAIText(String jsonResponse) {
         try {
             JSONObject json = new JSONObject(jsonResponse);
-            JSONArray candidates = json.getJSONArray("candidates");
-            if (candidates.length() > 0) {
+           JSONArray candidates = json.getJSONArray("candidates");
+           if (candidates.length() > 0) {
                 JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
                 JSONArray parts = content.getJSONArray("parts");
                 if (parts.length() > 0) {
@@ -301,7 +307,7 @@ public class Homepage extends JPanel {
             }
         });
         tabbedPane.setBackground(Color.BLACK);
-        tabbedPane.setForeground(Color.WHITE);
+        tabbedPane.setForeground(Color.BLACK);
         tabbedPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
@@ -384,7 +390,7 @@ public class Homepage extends JPanel {
         JPanel box = new JPanel();
         box.setLayout(new BorderLayout());
         box.setBackground(Color.DARK_GRAY);
-        box.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        box.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         JLabel nameLabel = new JLabel((String) data[0]);
         JLabel nameLabel1 = new JLabel((String) "\nType: " + data[1]);
@@ -510,11 +516,23 @@ public class Homepage extends JPanel {
 
     }
 
+
+
     private void loadHelpPanel() {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
         frame.setContentPane(new Helppage().getPanel());
         frame.revalidate();
         System.out.println("Help button pressed");
+    }
+
+
+    private static JPanel helppage = null;
+
+    public JPanel gethelppage() {
+        if (helppage == null) {
+            helppage = new Helppage().getPanel();
+        }
+        return helppage;
     }
 
     private void performSearch() {
@@ -548,16 +566,18 @@ public class Homepage extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Homepage");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
-            frame.setContentPane(new Homepage());
-            frame.getContentPane().setBackground(Color.BLACK);
-            frame.setVisible(true);
-        });
+   public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Homepage().showUI());
     }
+   
+   public void showUI(){
+        JFrame frame = new JFrame("Homepage");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setContentPane(new Homepage());
+        frame.getContentPane().setBackground(Color.BLACK);
+        frame.setVisible(true);
+   }
 
     public JPanel getPanel() {
         return this;
