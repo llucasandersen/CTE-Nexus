@@ -1,4 +1,4 @@
-This repository contains the source code for the FBLA 2023-24 CTE Partner Management App developed by Lucas Andersen for Cleburne. It is a comprehensive tool designed to enhance the functionality and user experience in managing partnerships within Career and Technical Education programs.
+This repository contains the source code for the FBLA 2023-24 CTE Partner Management App (CTE Nexus) developed by Lucas Andersen for Cleburne. It is a comprehensive tool designed to enhance the functionality and user experience in managing partnerships within Career and Technical Education programs.
 
 Key Features:
 
