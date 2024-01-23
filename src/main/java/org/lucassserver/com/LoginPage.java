@@ -68,7 +68,7 @@ public class LoginPage extends javax.swing.JFrame {
 
         titleofpanel.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         titleofpanel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleofpanel.setText("CTE Partners and Business Login Page");
+        titleofpanel.setText("CTE Nexus Login Page");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -350,7 +350,7 @@ public class LoginPage extends javax.swing.JFrame {
     private void displayErrorMessage(String errorMessage) {
         titleofpanel.setText(errorMessage);
 
-        Timer timer = new Timer(2000, e -> titleofpanel.setText("CTE Partners and Business Login Page"));
+        Timer timer = new Timer(2000, e -> titleofpanel.setText("CTE Nexus Login Page"));
         timer.setRepeats(false);
         timer.start();
     }
