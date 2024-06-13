@@ -4,12 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,12 +20,13 @@ import javax.swing.border.Border;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.InputStreamReader;
-//import org.json.JSONArray;
-//import org.json.JSONException;
-//import org.json.JSONObject;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import static java.lang.Thread.sleep;
-
 
 public class Homepage extends JPanel {
     private static final String API_KEY = "AIzaSyCJTc3g3cFaS3Vr16xfiuHnXC6XzPdwnW0";
@@ -38,6 +41,7 @@ public class Homepage extends JPanel {
     private JPanel cardsPanel;
     private JButton aiSearchButton;
     private JButton helpbutton;
+    private JButton reportButton; // Button for creating reports
     private static final String DATABASE_URL = "jdbc:mysql://96.39.211.90:12345/serverdata";
     private static final String DATABASE_USER = "root";
     private static final String DATABASE_PASSWORD = "p757sbrq86xpd42jg655kb3";
@@ -73,12 +77,8 @@ public class Homepage extends JPanel {
         return sb.toString();
     }
 
-
-
-
     // Getter method to retrieve the userId
     public String getUserId() {
-
         return this.userId;
     }
 
@@ -96,7 +96,6 @@ public class Homepage extends JPanel {
         topPanel.add(searchField);
         topPanel.add(searchButton);
 
-
         aiSearchButton = new JButton("AI Search");
         aiSearchButton.setForeground(Color.WHITE);
         aiSearchButton.setBackground(Color.DARK_GRAY); // Different color to distinguish
@@ -107,6 +106,10 @@ public class Homepage extends JPanel {
         helpbutton.setBackground(Color.DARK_GRAY);
         topPanel.add(helpbutton);
 
+        reportButton = new JButton("Create Report");
+        reportButton.setForeground(Color.WHITE);
+        reportButton.setBackground(Color.DARK_GRAY);
+        topPanel.add(reportButton);
 
         customizeTabbedPane();
 
@@ -125,7 +128,6 @@ public class Homepage extends JPanel {
         JLabel searchLabel = new JLabel("Search what you need");
         searchLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         searchLabel.setForeground(Color.WHITE); // Set text color to white for visibility
-
 
         aiSearchField = new JTextField(30);
         aiSearchField.setMaximumSize(new Dimension(aiSearchField.getPreferredSize().width, 40)); // to prevent stretching
@@ -156,7 +158,6 @@ public class Homepage extends JPanel {
 
         cardsPanel.add(aiSearchPanel, "AISearchPanel");
     }
-
 
     private void loadAISearchPanel() {
         cardLayout.show(cardsPanel, "AISearchPanel");
@@ -229,7 +230,6 @@ public class Homepage extends JPanel {
 
         // Convert the StringBuilder to a String
         return dataStringBuilder.toString();
-
     }
 
     private String getAIResponse(String searchText) {
@@ -270,8 +270,8 @@ public class Homepage extends JPanel {
     private String extractAIText(String jsonResponse) {
         try {
             JSONObject json = new JSONObject(jsonResponse);
-           JSONArray candidates = json.getJSONArray("candidates");
-           if (candidates.length() > 0) {
+            JSONArray candidates = json.getJSONArray("candidates");
+            if (candidates.length() > 0) {
                 JSONObject content = candidates.getJSONObject(0).getJSONObject("content");
                 JSONArray parts = content.getJSONArray("parts");
                 if (parts.length() > 0) {
@@ -312,7 +312,6 @@ public class Homepage extends JPanel {
     }
 
     private static class RoundedBorder implements Border {
-
         private int radius;
 
         RoundedBorder(int radius) {
@@ -347,13 +346,11 @@ public class Homepage extends JPanel {
                 tabPanel.add(createDataBox(data, id));
             }
 
-
             JScrollPane scrollPane = new JScrollPane(tabPanel);
             scrollPane.setBackground(Color.BLACK);
             tabbedPane.addTab(category, scrollPane);
         }
     }
-
 
     private List<Object[]> loadData(String category) {
         List<Object[]> dataList = new ArrayList<>();
@@ -383,8 +380,6 @@ public class Homepage extends JPanel {
         }
         return dataList;
     }
-
-
 
     public JPanel createDataBox(Object[] data, String userId) {
         JPanel box = new JPanel();
@@ -511,12 +506,14 @@ public class Homepage extends JPanel {
         aiSearchButton.addActionListener(e -> loadAISearchPanel());
         aiSearchPageButton.addActionListener(e -> performAISearch());
         helpbutton.addActionListener(e -> loadHelpPanel());
-
-
-
+        reportButton.addActionListener(e -> loadReportPanel());
     }
 
-
+    private void loadReportPanel() {
+        ReportPanel reportPanel = new ReportPanel(this);
+        cardsPanel.add(reportPanel, "ReportPanel");
+        cardLayout.show(cardsPanel, "ReportPanel");
+    }
 
     private void loadHelpPanel() {
         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -524,7 +521,6 @@ public class Homepage extends JPanel {
         frame.revalidate();
         System.out.println("Help button pressed");
     }
-
 
     private static JPanel helppage = null;
 
@@ -566,20 +562,228 @@ public class Homepage extends JPanel {
         }
     }
 
-   public static void main(String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Homepage().showUI());
     }
-   
-   public void showUI(){
+
+    public void showUI() {
         JFrame frame = new JFrame("Homepage");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setContentPane(new Homepage());
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setVisible(true);
-   }
+    }
 
     public JPanel getPanel() {
         return this;
+    }
+
+    // Method to fetch all partner data
+    public List<Object[]> getAllPartners() {
+        return loadData("Everything");
+    }
+}
+
+class ReportPanel extends JPanel {
+    private JTextField nameField;
+    private JTextArea descriptionArea;
+    private JTextArea resourcesArea;
+    private JTextArea contactArea;
+    private JTextArea websiteArea;
+    private JButton generateButton;
+    private JButton selectPartnerButton;
+    private JRadioButton pdfButton;
+    private JRadioButton jpgButton;
+    private ButtonGroup formatGroup;
+    private Homepage homepage;
+
+    public ReportPanel(Homepage homepage) {
+        this.homepage = homepage;
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(Color.BLACK);
+
+        selectPartnerButton = new JButton("Select Partner");
+        selectPartnerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        selectPartnerButton.addActionListener(e -> selectPartner());
+
+        add(selectPartnerButton);
+
+        add(createInputField("Name:", nameField = new JTextField(30)));
+        add(createInputArea("Description:", descriptionArea = new JTextArea(5, 30)));
+        add(createInputArea("Resources:", resourcesArea = new JTextArea(5, 30)));
+        add(createInputArea("Contact:", contactArea = new JTextArea(5, 30)));
+        add(createInputArea("Website:", websiteArea = new JTextArea(5, 30)));
+
+        JPanel formatPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        formatPanel.setBackground(Color.BLACK);
+        JLabel formatLabel = new JLabel("Select Format:");
+        formatLabel.setForeground(Color.WHITE);
+        formatPanel.add(formatLabel);
+
+        pdfButton = new JRadioButton("PDF");
+        pdfButton.setForeground(Color.WHITE);
+        pdfButton.setBackground(Color.BLACK);
+        jpgButton = new JRadioButton("JPG");
+        jpgButton.setForeground(Color.WHITE);
+        jpgButton.setBackground(Color.BLACK);
+
+        formatGroup = new ButtonGroup();
+        formatGroup.add(pdfButton);
+        formatGroup.add(jpgButton);
+
+        formatPanel.add(pdfButton);
+        formatPanel.add(jpgButton);
+
+        add(formatPanel);
+
+        generateButton = new JButton("Generate Report");
+        generateButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateButton.addActionListener(e -> generateReport());
+
+        add(Box.createVerticalStrut(10)); // Spacer
+        add(generateButton);
+    }
+
+    private JPanel createInputField(String labelText, JTextField textField) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.setBackground(Color.BLACK);
+
+        JLabel label = new JLabel(labelText);
+        label.setForeground(Color.WHITE);
+        panel.add(label);
+
+        textField.setForeground(Color.WHITE);
+        textField.setBackground(Color.DARK_GRAY);
+        panel.add(textField);
+
+        return panel;
+    }
+
+    private JPanel createInputArea(String labelText, JTextArea textArea) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.BLACK);
+
+        JLabel label = new JLabel(labelText);
+        label.setForeground(Color.WHITE);
+        panel.add(label);
+
+        textArea.setForeground(Color.WHITE);
+        textArea.setBackground(Color.DARK_GRAY);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(scrollPane);
+
+        return panel;
+    }
+
+    private void selectPartner() {
+        JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Select Partner", true);
+        dialog.setSize(400, 300);
+        dialog.setLayout(new BorderLayout());
+
+        List<Object[]> partners = homepage.getAllPartners();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Object[] partner : partners) {
+            listModel.addElement((String) partner[0]);
+        }
+
+        JList<String> partnerList = new JList<>(listModel);
+        partnerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(partnerList);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        JButton selectButton = new JButton("Select");
+        selectButton.addActionListener(e -> {
+            int selectedIndex = partnerList.getSelectedIndex();
+            if (selectedIndex != -1) {
+                Object[] selectedPartner = partners.get(selectedIndex);
+                populateFields(selectedPartner);
+                dialog.dispose();
+            }
+        });
+
+        dialog.add(selectButton, BorderLayout.SOUTH);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
+
+    private void populateFields(Object[] data) {
+        nameField.setText((String) data[0]);
+        descriptionArea.setText((String) data[2]);
+        resourcesArea.setText((String) data[3]);
+        contactArea.setText((String) data[4]);
+        websiteArea.setText((String) data[5]);
+    }
+
+    private void generateReport() {
+        String name = nameField.getText().trim();
+        String description = descriptionArea.getText().trim();
+        String resources = resourcesArea.getText().trim();
+        String contact = contactArea.getText().trim();
+        String website = websiteArea.getText().trim();
+
+        String reportContent = "Report for Partner: " + name + "\n\n" +
+                "Description:\n" + description + "\n\n" +
+                "Resources:\n" + resources + "\n\n" +
+                "Contact:\n" + contact + "\n\n" +
+                "Website:\n" + website + "\n\n";
+
+        if (pdfButton.isSelected()) {
+            saveAsPDF(reportContent);
+        } else if (jpgButton.isSelected()) {
+            saveAsJPG(reportContent);
+        }
+    }
+
+    private void saveAsPDF(String content) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PDF Files", "pdf"));
+        int option = fileChooser.showSaveDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!file.getName().toLowerCase().endsWith(".pdf")) {
+                file = new File(file.getParentFile(), file.getName() + ".pdf");
+            }
+
+            Document document = new Document();
+            try {
+                PdfWriter.getInstance(document, new FileOutputStream(file));
+                document.open();
+                document.add(new Paragraph(content));
+                document.close();
+                JOptionPane.showMessageDialog(this, "PDF report generated successfully!");
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveAsJPG(String content) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JPG Files", "jpg"));
+        int option = fileChooser.showSaveDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!file.getName().toLowerCase().endsWith(".jpg")) {
+                file = new File(file.getParentFile(), file.getName() + ".jpg");
+            }
+
+            BufferedImage image = new BufferedImage(600, 800, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = image.createGraphics();
+            g.setColor(Color.WHITE);
+            g.fillRect(0, 0, image.getWidth(), image.getHeight());
+            g.setColor(Color.BLACK);
+            g.drawString(content, 10, 25);
+            g.dispose();
+
+            try {
+                ImageIO.write(image, "jpg", file);
+                JOptionPane.showMessageDialog(this, "JPG report generated successfully!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
