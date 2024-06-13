@@ -8,7 +8,7 @@ Key Features:
 
 3. Vote-Up System: It allows companies to be voted to the top of the trending list, aiding users in identifying popular and highly-regarded partners.
 
-4. AI-Powered Search: The app has an intelligent search feature that selects the best company from the database based on user queries.
+4. AI-Powered Search: The app has an intelligent search feature that selects the best company from the database based on user queries powered by Google Gemini API.
 
 5. Efficient Navigation: It includes search buttons, tabs to sort and filter companies for streamlined browsing.
 
