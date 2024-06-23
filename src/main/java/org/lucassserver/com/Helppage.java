@@ -197,7 +197,7 @@ public class Helppage extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.DARK_GRAY); // Dark theme background
 
-        JLabel welcomeLabel = new JLabel("<html><h1>Welcome to the CTE Partners and Business App</h1><p>Before you start, let me run you through the basics.</p></html>");
+        JLabel welcomeLabel = new JLabel("<html><h1>Welcome to CTE-Nexus</h1><p>Before you start, let me run you through the basics.</p></html>");
         welcomeLabel.setForeground(Color.WHITE); // Text color for readability
         panel.add(welcomeLabel, BorderLayout.NORTH);
 
