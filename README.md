@@ -2,6 +2,8 @@
 
 Welcome to the **CTE Nexus** repository, developed by Lucas Andersen for Cleburne. This app is designed to enhance the functionality and user experience in managing partnerships within Career and Technical Education programs.
 
+🏆CTE Nexus was a NLC Qualifier
+
 ## Key Features 🔑
 
 ### 🔒 Secure Login System
