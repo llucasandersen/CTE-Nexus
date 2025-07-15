@@ -19,9 +19,9 @@ public class AdminPage {
     private JButton removeDataButton;
     private JButton logoutButton;
 
-    private static final String DATABASE_URL = "jdbc:mysql://96.39.211.90:12345/serverdata";
-    private static final String DATABASE_USER = "root";
-    private static final String DATABASE_PASSWORD = "p757sbrq86xpd42jg655kb3";
+    private static final String DATABASE_URL = System.getenv("DATABASE_URL");
+    private static final String DATABASE_USER = System.getenv("DATABASE_USER");
+    private static final String DATABASE_PASSWORD = System.getenv("DATABASE_PASSWORD");
 
     public AdminPage() {
         initComponents();

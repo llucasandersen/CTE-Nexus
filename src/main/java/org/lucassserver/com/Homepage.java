@@ -29,7 +29,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import static java.lang.Thread.sleep;
 
 public class Homepage extends JPanel {
-    private static final String API_KEY = "AIzaSyCJTc3g3cFaS3Vr16xfiuHnXC6XzPdwnW0";
+    private static final String API_KEY = System.getenv("GOOGLE_GEMINI_API_KEY");
 
     private JTextField searchField;
     private JButton searchButton;
@@ -42,9 +42,9 @@ public class Homepage extends JPanel {
     private JButton aiSearchButton;
     private JButton helpbutton;
     private JButton reportButton; // Button for creating reports
-    private static final String DATABASE_URL = "jdbc:mysql://96.39.211.90:12345/serverdata";
-    private static final String DATABASE_USER = "root";
-    private static final String DATABASE_PASSWORD = "p757sbrq86xpd42jg655kb3";
+    private static final String DATABASE_URL = System.getenv("DATABASE_URL");
+    private static final String DATABASE_USER = System.getenv("DATABASE_USER");
+    private static final String DATABASE_PASSWORD = System.getenv("DATABASE_PASSWORD");
 
     public Homepage() {
         initComponents();
