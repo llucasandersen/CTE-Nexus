@@ -21,10 +21,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.InputStreamReader;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import static java.lang.Thread.sleep;
 
@@ -747,14 +747,22 @@ class ReportPanel extends JPanel {
                 file = new File(file.getParentFile(), file.getName() + ".pdf");
             }
 
-            Document document = new Document();
-            try {
-                PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
-                document.add(new Paragraph(content));
-                document.close();
+            try (PDDocument document = new PDDocument()) {
+                PDPage page = new PDPage();
+                document.addPage(page);
+                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 12);
+                    contentStream.newLineAtOffset(50, 700);
+                    for (String line : content.split("\\n")) {
+                        contentStream.showText(line);
+                        contentStream.newLineAtOffset(0, -15);
+                    }
+                    contentStream.endText();
+                }
+                document.save(file);
                 JOptionPane.showMessageDialog(this, "PDF report generated successfully!");
-            } catch (DocumentException | IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
