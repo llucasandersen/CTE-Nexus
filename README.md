@@ -32,6 +32,25 @@ Allows creation of customizable reports available in PDF or JPG format for detai
 
 This app is tailored to foster a more integrated and efficient partnership ecosystem, making it easier for staff and partners to collaborate effectively.
 
+## Setup
+
+Database credentials and API keys are loaded from environment variables:
+
+- `DATABASE_URL`
+- `DATABASE_USER`
+- `DATABASE_PASSWORD`
+- `GOOGLE_GEMINI_API_KEY`
+
+Before running the application, ensure these variables are set in your environment.
+
+To help identify any accidentally committed secrets you can run the helper script:
+
+```bash
+python scripts/secret_cleaner.py
+```
+
+This script scans the repository for common secret patterns and reports any findings.
+
 ---
 
 Made with ❤️ by Lucas Andersen
